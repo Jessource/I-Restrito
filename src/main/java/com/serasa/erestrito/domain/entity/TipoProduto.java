@@ -17,10 +17,12 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name="tipo_produto")
 public class TipoProduto implements Serializable {
@@ -33,7 +35,7 @@ public class TipoProduto implements Serializable {
 	private Long id;
 	
 	@NotBlank
-	@Length(min = 12, max = 50)
+	@Length(min = 3, max = 50)
 	@Column(length = 50)
 	private String descricao;
 		

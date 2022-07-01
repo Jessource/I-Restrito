@@ -1,10 +1,10 @@
 package com.serasa.erestrito.middleware;
 
-public class ResponseValidationDto {
+public class ResponseValidation {
   private String campo;
 	private String mensagem;
 	
-	public ResponseValidationDto(String campo, String mensagem) {
+	public ResponseValidation(String campo, String mensagem) {
 		this.campo = campo;
 		this.mensagem = mensagem;
 	}
