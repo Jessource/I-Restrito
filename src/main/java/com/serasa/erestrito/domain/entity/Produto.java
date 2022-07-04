@@ -16,6 +16,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,21 +49,26 @@ public class Produto implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="restricao_id", nullable = false) 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private TipoRestricao tipoRestricao;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="marca_id", nullable = false) 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Marca marca;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="origem_id", nullable = false) 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Origem origem;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="adicao_id", nullable = false) 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private TipoAdicao tipoAdicao;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="tipoproduto_id", nullable = false) 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private TipoProduto tipoProduto;	
 }

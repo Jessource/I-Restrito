@@ -43,7 +43,13 @@ public class TipoProduto implements Serializable {
 		this.id = id;
 		this.descricao = descricao;
 	}
-	
+	public TipoProduto(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public TipoProduto(Long id) {
+		this.id = id;
+	}
 	
 	
 

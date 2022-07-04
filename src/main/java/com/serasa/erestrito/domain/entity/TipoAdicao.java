@@ -44,6 +44,14 @@ public class TipoAdicao implements Serializable {
 		this.descricao = descricao;
 	}
 	
+	public TipoAdicao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public TipoAdicao(Long id) {
+		this.id = id;
+	}
+	
 	
 	
 

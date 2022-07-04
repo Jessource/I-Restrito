@@ -17,11 +17,13 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name="origem")
 public class Origem implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -40,6 +42,15 @@ public class Origem implements Serializable {
 	public Origem(Long id, String descricao) {
 		this.id = id;
 		this.descricao = descricao;
+	}
+	
+	
+	public Origem(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Origem(Long id) {
+		this.id = id;
 	}
 	
 	

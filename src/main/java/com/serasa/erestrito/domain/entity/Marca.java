@@ -38,8 +38,11 @@ public class Marca implements Serializable {
 	@Column(length = 50)
 	private String descricao;
 	
-	public Marca(Long id, String descricao) {	
-		this.id = id;
+	public Marca(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public Marca(Long id) {	
+		this.id = id;
 	}
 }
