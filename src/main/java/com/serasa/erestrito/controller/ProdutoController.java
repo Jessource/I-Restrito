@@ -1,5 +1,6 @@
 package com.serasa.erestrito.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
@@ -9,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +49,10 @@ public class ProdutoController {
 
   @Autowired
   private FileStorageService fileStorageService;
+  
+  @Value("${file.upload-dir}")
+  private String FILE_PATH_ROOT;
+
 
   @GetMapping
   public List<Produto> getAll() {
@@ -139,15 +146,13 @@ public class ProdutoController {
   @GetMapping(value = "/preview/{fileName:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
   public ResponseEntity<byte[]> previewFile(@PathVariable String fileName, HttpServletRequest request)
       throws IOException {
-    fileStorageService.loadFileAsResource(fileName);
-
-    var imgFile = new ClassPathResource("uploads/" + fileName);
-    byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
-
-    return ResponseEntity
-        .ok()
-        .contentType(MediaType.IMAGE_JPEG)
-        .body(bytes);
+    byte[] image = new byte[0];
+    try {
+      image = FileUtils.readFileToByteArray(new File(FILE_PATH_ROOT + fileName));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
   }
 
 }
