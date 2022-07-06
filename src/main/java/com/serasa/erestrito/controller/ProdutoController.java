@@ -33,6 +33,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
+import org.springframework.data.web.SortDefault.SortDefaults;
 
 import com.serasa.erestrito.domain.dto.ProdutoDto;
 import com.serasa.erestrito.domain.entity.Produto;
@@ -55,8 +61,12 @@ public class ProdutoController {
 
 
   @GetMapping
-  public List<Produto> getAll() {
-    return service.listarTodos();
+  public Page<Produto> getAll(
+	  @PageableDefault(page = 0, size = 10) 
+	  @SortDefaults({
+        @SortDefault(sort = "id", direction = Direction.ASC)
+      }) Pageable paginacao) {
+    return service.listarTodos(paginacao);
   }
 
   @GetMapping("/{id}")
