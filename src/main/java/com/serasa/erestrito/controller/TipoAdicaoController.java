@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.serasa.erestrito.domain.dto.TipoDto;
 import com.serasa.erestrito.domain.entity.TipoAdicao;
 import com.serasa.erestrito.domain.entity.TipoProduto;
 import com.serasa.erestrito.service.TipoAdicaoService;
@@ -49,27 +50,31 @@ public class TipoAdicaoController {
 
 	  @PostMapping
 	  @Transactional
-	  public ResponseEntity<?> salvar(@RequestBody @Valid TipoAdicao payload, UriComponentsBuilder uriBuilder) {
-		  TipoAdicao adicao = service.salvar(payload);
-		  URI uri = uriBuilder.path("/tipo-adicao/{id}").buildAndExpand(adicao.getId()).toUri();
+	  public ResponseEntity<?> salvar(@RequestBody @Valid TipoDto payload, UriComponentsBuilder uriBuilder) {
+		TipoAdicao adicao = new TipoAdicao();
+		adicao.setDescricao(payload.getDescricao());
+		
+		TipoAdicao response = service.salvar(adicao);
+		URI uri = uriBuilder.path("/tipo-adicao/{id}").buildAndExpand(response.getId()).toUri();
 
-	    return ResponseEntity.created(uri).body(adicao); 
+	  return ResponseEntity.created(uri).body(response); 
+	}
+
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid TipoDto form) {
+	  Optional<TipoAdicao> adicao = service.listarPorId(id);
+
+	  if (adicao.isPresent()) {
+		  adicao.get().setDescricao(form.getDescricao());
+		  service.salvar(adicao.get());
+		
+		  return ResponseEntity.ok(service.salvar(adicao.get()));
 	  }
 
-	  @PutMapping("/{id}")
-	  @Transactional
-	  public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid TipoAdicao form) {
-	    Optional<TipoAdicao> adicao = service.listarPorId(id);
-
-	    if (adicao.isPresent()) {
-	    	form.setId(id);
-	    	service.salvar(form);
-	      
-	    	return ResponseEntity.ok(service.salvar(form));
-	    }
-
-	    return ResponseEntity.notFound().build();
-	  }
+	  return ResponseEntity.notFound().build();
+	}
+	  
 
 	  @DeleteMapping("/{id}")
 	  @Transactional

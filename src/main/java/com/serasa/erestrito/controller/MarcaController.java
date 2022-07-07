@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.serasa.erestrito.domain.dto.TipoDto;
 import com.serasa.erestrito.domain.entity.Marca;
 import com.serasa.erestrito.domain.entity.TipoProduto;
 import com.serasa.erestrito.service.MarcaService;
@@ -48,23 +49,26 @@ public class MarcaController {
 
 	  @PostMapping
 	  @Transactional
-	  public ResponseEntity<?> salvar(@RequestBody @Valid Marca payload, UriComponentsBuilder uriBuilder) {
-		  Marca marca = service.salvar(payload);
-		  URI uri = uriBuilder.path("/marca/{id}").buildAndExpand(marca.getId()).toUri();
+	  public ResponseEntity<?> salvar(@RequestBody @Valid TipoDto payload, UriComponentsBuilder uriBuilder) {
+		  Marca marca = new Marca();
+		  marca.setDescricao(payload.getDescricao());
+		  
+		  Marca response = service.salvar(marca);
+		  URI uri = uriBuilder.path("/marca/{id}").buildAndExpand(response.getId()).toUri();
 
-	    return ResponseEntity.created(uri).body(marca); 
+	    return ResponseEntity.created(uri).body(response); 
 	  }
 
 	  @PutMapping("/{id}")
 	  @Transactional
-	  public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid Marca form) {
+	  public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid TipoDto form) {
 	    Optional<Marca> marca = service.listarPorId(id);
 
 	    if (marca.isPresent()) {
-	    	form.setId(id);
-	    	service.salvar(form);
+	    	marca.get().setDescricao(form.getDescricao());
+	    	service.salvar(marca.get());
 	      
-	    	return ResponseEntity.ok(service.salvar(form));
+	    	return ResponseEntity.ok(service.salvar(marca.get()));
 	    }
 
 	    return ResponseEntity.notFound().build();

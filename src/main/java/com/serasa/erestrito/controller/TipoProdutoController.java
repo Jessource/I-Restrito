@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.serasa.erestrito.domain.dto.TipoDto;
 import com.serasa.erestrito.domain.entity.TipoProduto;
 import com.serasa.erestrito.domain.entity.TipoRestricao;
 import com.serasa.erestrito.repository.TipoProdutoRepository;
@@ -50,27 +51,30 @@ public class TipoProdutoController {
 
 	  @PostMapping
 	  @Transactional
-	  public ResponseEntity<?> salvar(@RequestBody @Valid TipoProduto payload, UriComponentsBuilder uriBuilder) {
-		  TipoProduto tProduto = service.salvar(payload);
-		  URI uri = uriBuilder.path("/tipo-produto/{id}").buildAndExpand(tProduto.getId()).toUri();
+	  public ResponseEntity<?> salvar(@RequestBody @Valid TipoDto payload, UriComponentsBuilder uriBuilder) {
+		TipoProduto tproduto = new TipoProduto();
+		tproduto.setDescricao(payload.getDescricao());
+		
+		TipoProduto response = service.salvar(tproduto);
+		URI uri = uriBuilder.path("/tipo-produto/{id}").buildAndExpand(response.getId()).toUri();
 
-	    return ResponseEntity.created(uri).body(tProduto); 
+	  return ResponseEntity.created(uri).body(response); 
+	}
+
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid TipoDto form) {
+	  Optional<TipoProduto> tproduto = service.listarPorId(id);
+
+	  if (tproduto.isPresent()) {
+		  tproduto.get().setDescricao(form.getDescricao());
+		  service.salvar(tproduto.get());
+		
+		  return ResponseEntity.ok(service.salvar(tproduto.get()));
 	  }
 
-	  @PutMapping("/{id}")
-	  @Transactional
-	  public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid TipoProduto form) {
-	    Optional<TipoProduto> tProduto = service.listarPorId(id);
-
-	    if (tProduto.isPresent()) {
-	    	form.setId(id);
-	    	service.salvar(form);
-	      
-	    	return ResponseEntity.ok(service.salvar(form));
-	    }
-
-	    return ResponseEntity.notFound().build();
-	  }
+	  return ResponseEntity.notFound().build();
+	}
 
 	  @DeleteMapping("/{id}")
 	  @Transactional

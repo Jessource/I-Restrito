@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.serasa.erestrito.domain.dto.TipoDto;
 import com.serasa.erestrito.domain.entity.Origem;
 import com.serasa.erestrito.domain.entity.TipoProduto;
 import com.serasa.erestrito.service.OrigemService;
@@ -49,27 +50,30 @@ public class OrigemController {
 
 	  @PostMapping
 	  @Transactional
-	  public ResponseEntity<?> salvar(@RequestBody @Valid Origem payload, UriComponentsBuilder uriBuilder) {
-		  Origem origem = service.salvar(payload);
-		  URI uri = uriBuilder.path("/adicao/{id}").buildAndExpand(origem.getId()).toUri();
+	  public ResponseEntity<?> salvar(@RequestBody @Valid TipoDto payload, UriComponentsBuilder uriBuilder) {
+		Origem origem = new Origem();
+		origem.setDescricao(payload.getDescricao());
+		
+		Origem response = service.salvar(origem);
+		URI uri = uriBuilder.path("/origem/{id}").buildAndExpand(response.getId()).toUri();
 
-	    return ResponseEntity.created(uri).body(origem); 
+	  return ResponseEntity.created(uri).body(response); 
+	}
+
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid TipoDto form) {
+	  Optional<Origem> origem = service.listarPorId(id);
+
+	  if (origem.isPresent()) {
+		  origem.get().setDescricao(form.getDescricao());
+		  service.salvar(origem.get());
+		
+		  return ResponseEntity.ok(service.salvar(origem.get()));
 	  }
 
-	  @PutMapping("/{id}")
-	  @Transactional
-	  public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid Origem form) {
-	    Optional<Origem> origem = service.listarPorId(id);
-
-	    if (origem.isPresent()) {
-	    	form.setId(id);
-	    	service.salvar(form);
-	      
-	    	return ResponseEntity.ok(service.salvar(form));
-	    }
-
-	    return ResponseEntity.notFound().build();
-	  }
+	  return ResponseEntity.notFound().build();
+	}
 
 	  @DeleteMapping("/{id}")
 	  @Transactional
