@@ -35,8 +35,8 @@ public class UsuarioController {
 	@Autowired
 	UsuarioService service;
 
-	@CrossOrigin("localhost:8080") // permitido o acesso
-	@RequestMapping(method = RequestMethod.GET, produces = { "application/json", "application/xml" })
+	@CrossOrigin("localhost:8080") 
+	@GetMapping( produces = { "application/json", "application/xml" })
 	@Operation(summary = "Listar todas as pessoas")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<UsuarioVO> findAll() {
@@ -46,7 +46,7 @@ public class UsuarioController {
 		return usuariosVO;
 	}
 
-	@CrossOrigin({ "localhost:8080" }) // permitido o acesso
+	@CrossOrigin({ "localhost:8080" }) 
 	@GetMapping(value = "/{id}", produces = { "application/json", "application/xml" })
 	@ResponseStatus(value = HttpStatus.OK)
 	public UsuarioVO findById(@PathVariable("id") Long id) {

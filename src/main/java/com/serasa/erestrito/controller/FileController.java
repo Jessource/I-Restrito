@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,7 +28,7 @@ import com.serasa.erestrito.service.FileStorageService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-//@Profile("dev")
+@Profile("dev")
 @Tag( name= "FileEndpoint")
 @RestController
 @RequestMapping("/api/file/v1") 
