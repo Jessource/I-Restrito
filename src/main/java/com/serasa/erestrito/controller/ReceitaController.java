@@ -3,7 +3,6 @@ package com.serasa.erestrito.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,27 +10,22 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,13 +39,12 @@ import com.serasa.erestrito.domain.entity.Receita;
 import com.serasa.erestrito.domain.entity.Usuario;
 import com.serasa.erestrito.security.jwt.CurrentUser;
 import com.serasa.erestrito.service.FileStorageService;
-import com.serasa.erestrito.service.ProdutoService;
 import com.serasa.erestrito.service.ReceitaService;
 
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@RequestMapping("api/v1/receita")
+@RequestMapping("api/v1//receita")
 public class ReceitaController {
 
   @Autowired
@@ -59,17 +52,16 @@ public class ReceitaController {
 
   @Autowired
   private FileStorageService fileStorageService;
-  
+
   @Value("${file.upload-dir}")
   private String FILE_PATH_ROOT;
-  //aqui pego a variavel de ambiente que coloquei no propotis: passando o caminho de onde as imagens irão ser salvas
-
+  // aqui pego a variavel de ambiente que coloquei no propotis: passando o caminho
+  // de onde as imagens irão ser salvas
 
   @GetMapping
   public Page<Receita> getAll(
-	  @PageableDefault(page = 0, size = 10) 
-	  @SortDefaults({
-        @SortDefault(sort = "id", direction = Direction.ASC)
+      @PageableDefault(page = 0, size = 10) @SortDefaults({
+          @SortDefault(sort = "id", direction = Direction.ASC)
       }) Pageable paginacao) {
     return service.listarTodos(paginacao);
   }
@@ -103,44 +95,36 @@ public class ReceitaController {
 
     service.salvar(receita);
 
-    URI uri = uriBuilder.path("/receita/{id}").buildAndExpand(receita.getId()).toUri();
-
-    ReceitaDto receitaDto = new ReceitaDto();
-
-    receitaDto.setTitulo(receita.getTitulo());
-    receitaDto.setIngredientes(receita.getIngredientes());
-    receitaDto.setModoDeFazer(receita.getModoDeFazer());
-    receitaDto.setTempoDePreparo(receita.getTempoDePreparo());
-    receitaDto.setRendimento(receita.getRendimento());
-    receitaDto.setRestricao(receita.getRestricao());
-
+    URI uri = uriBuilder.path("/produto/{id}").buildAndExpand(receita.getId()).toUri();
 
     return ResponseEntity.created(uri).body(receita);
   }
-  
+
   @PutMapping("/{id}")
   @Transactional
-  public ResponseEntity<?> atualizar(@PathVariable Long id, @ModelAttribute @Valid ReceitaDto payload, @RequestPart MultipartFile imagem,
-	      UriComponentsBuilder uriBuilder) {
+  public ResponseEntity<?> atualizar(@PathVariable Long id, @ModelAttribute @Valid ReceitaDto payload,
+      @RequestPart MultipartFile imagem,
+      UriComponentsBuilder uriBuilder) {
     Optional<Receita> receita = service.listarPorId(id);
 
     if (receita.isPresent()) {
-    	Receita prod = payload.converte();
-    	prod.setFoto(receita.get().getFoto());
-    	prod.setId(id);
-    	
-    	if(!imagem.isEmpty()) {
-    		String fileName = fileStorageService.storeFile(imagem);
+      Receita prod = payload.converte();
+      prod.setFoto(receita.get().getFoto());
+      prod.setId(id);
+      prod.setUsuario(receita.get().getUsuario());
 
-    	    String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-    	        .path("/receita/preview/")
-    	        .path(fileName)
-    	        .toUriString();
+      if (!imagem.isEmpty()) {
+        String fileName = fileStorageService.storeFile(imagem);
 
-    	    prod.setFoto(fileDownloadUri);
-    	}
-      
-    	return ResponseEntity.ok(service.salvar(prod));
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/receita/preview/")
+            .path(fileName)
+            .toUriString();
+
+        prod.setFoto(fileDownloadUri);
+      }
+
+      return ResponseEntity.ok(service.salvar(prod));
     }
 
     return ResponseEntity.notFound().build();
@@ -169,7 +153,7 @@ public class ReceitaController {
 
   }
 
-  @GetMapping(value = "/preview/{fileName:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
+  @GetMapping(value = "/preview/{fileName:.+}")
   public ResponseEntity<byte[]> previewFile(@PathVariable String fileName, HttpServletRequest request)
       throws IOException {
     byte[] image = new byte[0];
@@ -182,5 +166,3 @@ public class ReceitaController {
   }
 
 }
-
-

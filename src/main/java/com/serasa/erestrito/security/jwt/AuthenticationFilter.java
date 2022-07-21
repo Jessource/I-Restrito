@@ -1,4 +1,5 @@
 package com.serasa.erestrito.security.jwt;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;

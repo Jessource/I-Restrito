@@ -14,7 +14,6 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.github.dozermapper.core.Mapping;
-
 import com.serasa.erestrito.domain.enums.Perfil;
 
 import lombok.Getter;
@@ -28,7 +27,7 @@ public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Seriali
 
 	@Mapping("id")
 	private Long key;
-	
+
 	@NotBlank
 	@Length(min = 3)
 	private String nome;
@@ -44,18 +43,22 @@ public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Seriali
 
 	@NotBlank
 	@Length(min = 4)
-  private String senha;
+	private String senha;
+
+	@NotNull
+	@Length(min = 2, max = 2)
+	private String uf;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Perfil perfil;
-	
+
 	@NotNull
 	private Date dataNascimento;
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, key, nome, sobrenome, dataNascimento);
+		return Objects.hash(email, key, nome, sobrenome, uf, dataNascimento);
 	}
 
 	@Override
@@ -70,7 +73,7 @@ public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Seriali
 		UsuarioVO other = (UsuarioVO) obj;
 		return Objects.equals(dataNascimento, other.dataNascimento) && Objects.equals(email, other.email)
 				&& Objects.equals(key, other.key) && Objects.equals(nome, other.nome)
-				&& Objects.equals(sobrenome, other.sobrenome);
+				&& Objects.equals(sobrenome, other.sobrenome) && Objects.equals(uf, other.uf);
 	}
 
 }

@@ -52,16 +52,14 @@ public class ProdutoController {
 
   @Autowired
   private FileStorageService fileStorageService;
-  
+
   @Value("${file.upload-dir}")
   private String FILE_PATH_ROOT;
 
-
   @GetMapping
   public Page<Produto> getAll(
-	  @PageableDefault(page = 0, size = 10) 
-	  @SortDefaults({
-        @SortDefault(sort = "id", direction = Direction.ASC)
+      @PageableDefault(page = 0, size = 10) @SortDefaults({
+          @SortDefault(sort = "id", direction = Direction.ASC)
       }) Pageable paginacao) {
     return service.listarTodos(paginacao);
   }
@@ -109,30 +107,31 @@ public class ProdutoController {
 
     return ResponseEntity.created(uri).body(produtoDto);
   }
-  
+
   @PutMapping("/{id}")
   @Transactional
-  public ResponseEntity<?> atualizar(@PathVariable Long id, @ModelAttribute @Valid ProdutoDto payload, @RequestPart MultipartFile imagem,
-	      UriComponentsBuilder uriBuilder) {
+  public ResponseEntity<?> atualizar(@PathVariable Long id, @ModelAttribute @Valid ProdutoDto payload,
+      @RequestPart MultipartFile imagem,
+      UriComponentsBuilder uriBuilder) {
     Optional<Produto> produto = service.listarPorId(id);
 
     if (produto.isPresent()) {
-    	Produto prod = payload.converte();
-    	prod.setFoto(produto.get().getFoto());
-    	prod.setId(id);
-    	
-    	if(!imagem.isEmpty()) {
-    		String fileName = fileStorageService.storeFile(imagem);
+      Produto prod = payload.converte();
+      prod.setFoto(produto.get().getFoto());
+      prod.setId(id);
 
-    	    String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-    	        .path("/produto/preview/")
-    	        .path(fileName)
-    	        .toUriString();
+      if (!imagem.isEmpty()) {
+        String fileName = fileStorageService.storeFile(imagem);
 
-    	    prod.setFoto(fileDownloadUri);
-    	}
-      
-    	return ResponseEntity.ok(service.salvar(prod));
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/produto/preview/")
+            .path(fileName)
+            .toUriString();
+
+        prod.setFoto(fileDownloadUri);
+      }
+
+      return ResponseEntity.ok(service.salvar(prod));
     }
 
     return ResponseEntity.notFound().build();

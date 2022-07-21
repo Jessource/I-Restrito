@@ -2,10 +2,9 @@ package com.serasa.erestrito.domain.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,54 +17,47 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.serasa.erestrito.domain.enums.Restricao;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
-@Table(name = "produtos")
-public class Produto implements Serializable {
+@Table(name = "comentario_receita")
+public class ComentarioReceita implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_produto")
+	@Column(name = "id")
 	private Long id;
 
 	@NotBlank
 	@Length(min = 5, max = 50)
-	@Column(length = 50, nullable = false)
-	private String nome;
-
-	@NotBlank
-	@Length(min = 5, max = 50)
-	@Column(length = 50, nullable = false)
+	@Column(length = 50)
 	private String descricao;
 
-	@Column(nullable = true)
-	private String foto;
-
-	@Column(nullable = true)
-	@Enumerated(EnumType.STRING)
-	private Restricao restricao;
-
-	@Column(nullable = true)
-	private String origem;
-
-	@Column(nullable = true)
-	private String marca;
-
-	@Column(nullable = true)
-	private String adicao;
-
-	@Column(nullable = true)
-	private String tipoProduto;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "receita_id", nullable = false)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	// @JsonIgnoreProperties permite um controle mais preciso sobre quais objetos
+	// devem ignorar campos desconhecidos e quais não devem.
+	private Receita receita;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id", nullable = false)
 	@JsonIgnore
 	private Usuario usuario;
+
+	public ComentarioReceita(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public ComentarioReceita(Long id) {
+		this.id = id;
+	}
 }

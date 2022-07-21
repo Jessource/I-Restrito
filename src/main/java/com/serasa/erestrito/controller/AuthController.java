@@ -22,34 +22,34 @@ import com.serasa.erestrito.security.jwt.TokenService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name="Authentication Endpoint")
+@Tag(name = "Authentication Endpoint")
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-	@Autowired	
+	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
 	private TokenService tokenService;
 
-	@PostMapping(produces = { "application/json", "application/xml" }, 
-			consumes = { "application/json",	"application/xml" })
+	@PostMapping(produces = { "application/json", "application/xml" }, consumes = { "application/json",
+			"application/xml" })
 	public ResponseEntity<?> signin(@RequestBody CredenciaisContaVO cred) {
-		
+
 		try {
 			var username = cred.getUsername();
 			var password = cred.getPassword();
-			
+
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(username, password));
 
 			String token = tokenService.generateToken(authentication);
-			
+
 			Map<Object, Object> model = new HashMap<>();
 			model.put("token", token);
 			model.put("type", "Bearer");
-			
+
 			return ok(model);
 		} catch (AuthenticationException e) {
 			throw new BadCredentialsException("Usuário ou senha inválidos");

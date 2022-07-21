@@ -17,32 +17,32 @@ import lombok.Setter;
 @Setter
 public class ProdutoDto {
   @NotBlank
-	@Length(min = 5, max = 50)
-	private String nome;
+  @Length(min = 5, max = 50)
+  private String nome;
 
-	@NotBlank
-	@Length(min = 5, max = 50)
-	private String descricao;
+  @NotBlank
+  @Length(min = 5, max = 50)
+  private String descricao;
 
   @NotNull
   @Enumerated(EnumType.STRING)
-	private Restricao restricao;
+  private Restricao restricao;
 
   @NotNull
-	private String marca;
+  private String marca;
 
   @NotNull
-	private String origem;
+  private String origem;
 
   @NotNull
-	private String adicao;
+  private String adicao;
 
   @NotNull
-	private String tipoProduto;
+  private String tipoProduto;
 
   public Produto converte() {
     Produto produto = new Produto();
-    
+
     produto.setNome(this.getNome());
     produto.setDescricao(this.getDescricao());
     produto.setRestricao(this.getRestricao());

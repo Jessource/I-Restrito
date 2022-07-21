@@ -28,8 +28,8 @@ public class ReceitaService {
 		return repository.save(receita);
 	}
 
-	public void apagar(Receita Produto) {
-		repository.delete(Produto);
+	public void apagar(Receita receita) {
+		repository.delete(receita);
 	}
 
 }

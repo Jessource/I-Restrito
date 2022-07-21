@@ -1,8 +1,10 @@
 package com.serasa.erestrito.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.serasa.erestrito.adapter.DozerConverter;
@@ -16,9 +18,14 @@ public class UsuarioService {
 	
 	@Autowired
 	UsuarioRepository repository;
+
+	@Autowired
+  private PasswordEncoder encoder;
 	
 	public UsuarioVO inserir(UsuarioVO usuario) {
 		var entity = DozerConverter.parseObject(usuario, Usuario.class);
+		entity.setSenha(encoder.encode(usuario.getSenha()));
+
 		var vo = DozerConverter.parseObject(repository.save(entity), UsuarioVO.class);
 		return vo;
 	}
@@ -41,7 +48,8 @@ public class UsuarioService {
 		entity.setSobrenome(usuario.getSobrenome());
 		entity.setEmail(usuario.getEmail());
 		entity.setUf(usuario.getUf());
-		entity.setDataDeNascimento(usuario.getDataDeNascimento());
+		entity.setDataNascimento(usuario.getDataNascimento());
+		entity.setUpdatedAt(LocalDateTime.now());
 		
 		var vo = DozerConverter.parseObject(repository.save(entity), UsuarioVO.class);
 		return vo;
@@ -52,8 +60,4 @@ public class UsuarioService {
 				.orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado registro com esse Id"));
 		repository.delete(entity);
 	}
-	
-	
-	
-
 }

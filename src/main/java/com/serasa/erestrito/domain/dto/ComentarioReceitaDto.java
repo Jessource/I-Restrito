@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ComentarioProdutoDto {
+public class ComentarioReceitaDto {
 
 	@NotBlank
 	@Length(min = 5, max = 50)
@@ -18,5 +18,5 @@ public class ComentarioProdutoDto {
 	private String descricao;
 
 	@NotNull
-	private Long produto;
+	private Long receita;
 }

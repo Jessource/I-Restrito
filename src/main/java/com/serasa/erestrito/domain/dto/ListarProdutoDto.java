@@ -1,7 +1,6 @@
 package com.serasa.erestrito.domain.dto;
 
 import com.serasa.erestrito.domain.entity.Produto;
-import com.serasa.erestrito.domain.enums.Origem;
 import com.serasa.erestrito.domain.enums.Restricao;
 
 import lombok.Getter;
@@ -10,11 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ListarProdutoDto {
-  private Long id;
+	private Long id;
 
 	private String nome;
 
-  private String foto;
+	private String foto;
 
 	private String descricao;
 
@@ -28,7 +27,7 @@ public class ListarProdutoDto {
 
 	private String tipoProduto;
 
-  private Long cadastradoPor;
+	private Long cadastradoPor;
 
 	public ListarProdutoDto(Produto produto) {
 		this.setId(produto.getId());
@@ -41,5 +40,5 @@ public class ListarProdutoDto {
 		this.setAdicao(produto.getAdicao());
 		this.setTipoProduto(produto.getTipoProduto());
 		this.setCadastradoPor(produto.getUsuario().getId());
-  }
+	}
 }
