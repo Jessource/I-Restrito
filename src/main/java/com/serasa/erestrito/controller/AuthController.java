@@ -10,61 +10,50 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.serasa.erestrito.repository.LoginRepository;
 import com.serasa.erestrito.security.CredenciaisContaVO;
-import com.serasa.erestrito.security.jwt.JwtProvider;
+import com.serasa.erestrito.security.jwt.TokenService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name="Authentication Endpoint")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
 	@Autowired	
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
 	@Autowired
-	JwtProvider tokenProvider;
+	private TokenService tokenService;
 
-	@Autowired
-	LoginRepository repository;
-
-	@PostMapping(value = "/signin", produces = { "application/json", "application/xml" }, 
+	@PostMapping(produces = { "application/json", "application/xml" }, 
 			consumes = { "application/json",	"application/xml" })
-	public ResponseEntity signin(@RequestBody CredenciaisContaVO cred) {
+	public ResponseEntity<?> signin(@RequestBody CredenciaisContaVO cred) {
 		
 		try {
 			var username = cred.getUsername();
 			var password = cred.getPassword();
 			
-			authenticationManager.authenticate(
+			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(username, password));
+
+			String token = tokenService.generateToken(authentication);
 			
-			var user = repository.findByUserName(username);
-			var token = "";
-			
-			if (user !=null) {
-				token = tokenProvider.createToken(username, user.getRoles());
-			}else {
-				throw new UsernameNotFoundException("Usuário " + username+ "não localizado");
-			}
 			Map<Object, Object> model = new HashMap<>();
-			model.put("username", username);
 			model.put("token", token);
+			model.put("type", "Bearer");
 			
 			return ok(model);
 		} catch (AuthenticationException e) {
 			throw new BadCredentialsException("Usuário ou senha inválidos");
 		}
-		
 	}
 
 }

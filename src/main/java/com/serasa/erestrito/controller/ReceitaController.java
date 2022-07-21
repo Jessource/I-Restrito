@@ -42,12 +42,16 @@ import org.springframework.data.web.SortDefault.SortDefaults;
 
 import com.serasa.erestrito.domain.dto.ReceitaDto;
 import com.serasa.erestrito.domain.entity.Receita;
+import com.serasa.erestrito.domain.entity.Usuario;
+import com.serasa.erestrito.security.jwt.CurrentUser;
 import com.serasa.erestrito.service.FileStorageService;
 import com.serasa.erestrito.service.ProdutoService;
 import com.serasa.erestrito.service.ReceitaService;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 @RestController
-@RequestMapping("/receita")
+@RequestMapping("api/v1/receita")
 public class ReceitaController {
 
   @Autowired
@@ -84,7 +88,7 @@ public class ReceitaController {
   @PostMapping
   @Transactional
   public ResponseEntity<?> salvar(@ModelAttribute @Valid ReceitaDto payload, @RequestPart MultipartFile imagem,
-      UriComponentsBuilder uriBuilder) {
+      UriComponentsBuilder uriBuilder, @ApiIgnore @CurrentUser Usuario usuarioLogado) {
     String fileName = fileStorageService.storeFile(imagem);
 
     Receita receita = payload.converte();
@@ -95,10 +99,21 @@ public class ReceitaController {
         .toUriString();
 
     receita.setFoto(fileDownloadUri);
+    receita.setUsuario(usuarioLogado);
 
     service.salvar(receita);
 
-    URI uri = uriBuilder.path("/produto/{id}").buildAndExpand(receita.getId()).toUri();
+    URI uri = uriBuilder.path("/receita/{id}").buildAndExpand(receita.getId()).toUri();
+
+    ReceitaDto receitaDto = new ReceitaDto();
+
+    receitaDto.setTitulo(receita.getTitulo());
+    receitaDto.setIngredientes(receita.getIngredientes());
+    receitaDto.setModoDeFazer(receita.getModoDeFazer());
+    receitaDto.setTempoDePreparo(receita.getTempoDePreparo());
+    receitaDto.setRendimento(receita.getRendimento());
+    receitaDto.setRestricao(receita.getRestricao());
+
 
     return ResponseEntity.created(uri).body(receita);
   }

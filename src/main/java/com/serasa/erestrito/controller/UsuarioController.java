@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Usuario Endpoint")
 @RestController
-@RequestMapping("api/usuario/v1")
+@RequestMapping("api/v1/usuario")
 public class UsuarioController {
 
 	@Autowired
@@ -61,6 +60,7 @@ public class UsuarioController {
 	public UsuarioVO create(@Valid @RequestBody UsuarioVO pessoa) {
 		UsuarioVO usuarioVO = service.inserir(pessoa);
 		usuarioVO.add(linkTo(methodOn(UsuarioController.class).findById(usuarioVO.getKey())).withSelfRel());
+		usuarioVO.setSenha("");
 		return usuarioVO;
 	}
 

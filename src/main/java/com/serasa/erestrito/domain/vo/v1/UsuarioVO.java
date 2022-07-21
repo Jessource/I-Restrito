@@ -4,73 +4,58 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.github.dozermapper.core.Mapping;
 
+import com.serasa.erestrito.domain.enums.Perfil;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Mapping("id")
 	private Long key;
+	
+	@NotBlank
+	@Length(min = 3)
 	private String nome;
+
+	@NotBlank
+	@Length(min = 3)
 	private String sobrenome;
+
+	@NotBlank
+	@Length(min = 6)
+	@Email
 	private String email;
-	private String uf;
-	private Date dataDeNascimento;
 
-	public Long getKey() {
-		return key;
-	}
+	@NotBlank
+	@Length(min = 4)
+  private String senha;
 
-	public void setKey(Long key) {
-		this.key = key;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getSobrenome() {
-		return sobrenome;
-	}
-
-	public void setSobrenome(String sobrenome) {
-		this.sobrenome = sobrenome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getUf() {
-		return uf;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
-
-	public Date getDataDeNascimento() {
-		return dataDeNascimento;
-	}
-
-	public void setDataDeNascimento(Date dataDeNascimento) {
-		this.dataDeNascimento = dataDeNascimento;
-	}
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Perfil perfil;
+	
+	@NotNull
+	private Date dataNascimento;
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, key, nome, sobrenome, uf, dataDeNascimento);
+		return Objects.hash(email, key, nome, sobrenome, dataNascimento);
 	}
 
 	@Override
@@ -83,9 +68,9 @@ public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Seriali
 			return false;
 
 		UsuarioVO other = (UsuarioVO) obj;
-		return Objects.equals(dataDeNascimento, other.dataDeNascimento) && Objects.equals(email, other.email)
+		return Objects.equals(dataNascimento, other.dataNascimento) && Objects.equals(email, other.email)
 				&& Objects.equals(key, other.key) && Objects.equals(nome, other.nome)
-				&& Objects.equals(sobrenome, other.sobrenome) && Objects.equals(uf, other.uf);
+				&& Objects.equals(sobrenome, other.sobrenome);
 	}
 
 }
