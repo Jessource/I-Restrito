@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +38,7 @@ import org.springframework.data.web.SortDefault.SortDefaults;
 import com.serasa.erestrito.domain.dto.ProdutoDto;
 import com.serasa.erestrito.domain.entity.Produto;
 import com.serasa.erestrito.domain.entity.Usuario;
+import com.serasa.erestrito.domain.enums.Restricao;
 import com.serasa.erestrito.security.jwt.CurrentUser;
 import com.serasa.erestrito.service.FileStorageService;
 import com.serasa.erestrito.service.ProdutoService;
@@ -60,8 +62,13 @@ public class ProdutoController {
   public Page<Produto> getAll(
       @PageableDefault(page = 0, size = 10) @SortDefaults({
           @SortDefault(sort = "id", direction = Direction.ASC)
-      }) Pageable paginacao) {
-    return service.listarTodos(paginacao);
+      }) Pageable paginacao,
+      @RequestParam(required = false) Restricao restricao) {
+    if (restricao != null) {
+      return service.listarTodos(restricao, paginacao);
+    } else {
+      return service.listarTodos(paginacao);
+    }
   }
 
   @GetMapping("/{id}")

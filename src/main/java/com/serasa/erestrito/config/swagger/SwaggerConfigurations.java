@@ -27,7 +27,6 @@ public class SwaggerConfigurations {
 	public Docket SwaggerConfig() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(this.apiInfo())
-				.ignoredParameterTypes(Authentication.class)
 				.securityContexts(Arrays.asList(securityContext()))
 				.securitySchemes(Arrays.asList(apiKey()))
 				.select()
