@@ -24,3 +24,30 @@
 
 
 <hr>
+
+Este projeto foi desenvolvido em [Spring Boot](https://spring.io/quickstart) na versão 2.6.7
+
+## Configurações iniciais
+Primeiramente, é necessário ter no mínimo a versão 8 do Java.\
+[Versão Windows](https://www.oracle.com/java/technologies/downloads/#java8-windows).\
+[Versão Linux - baseados em Debian](https://www.oracle.com/java/technologies/downloads/#java8-linux).\
+[Versão MacOS](https://www.oracle.com/java/technologies/downloads/#java8-mac).
+
+Após a instalação do Java, precisamos configurar o banco de dados, que nesse caso é o [MySQL 8](https://dev.mysql.com/downloads/mysql/). Ao término da configuração do MySQL, crie um schema chamado `db_irestrito` para que o Spring Boot possa criar as tabela e preencher com as seeds ao iniciar a aplicação.
+
+Modifique as propriedades `spring.datasource.username` e `spring.datasource.password` no arquivo [application.properties](https://github.com/marcelloJr/agendamento-aula-api/blob/main/src/main/resources/application.properties) para seu respectivo `usuário` e `senha` do MySQL.
+
+Crie uma pasta na raiz do seu diretório e renomei como: "uploads" passando assim o caminho para o upload de imagens: no `aplication.properties` `file.upload-dir=C:/uploads/`
+
+Ao iniciar a aplicação, consulte o swagger no endereço http://localhost:8080/swagger-ui/#/ para ter acesso aos endpoints.
+
+## Dados padrões
+Ao rodar a primeira vez a aplicação, alguns dados são semeados no banco:
+
+```
+                            Usuarios
+
+id    nome                email              senha         uf       data_nascimento     Perfil
+1     Administrador   admin@admin.com        admin         SP       1988-02-18          ADMIN
+
+```
