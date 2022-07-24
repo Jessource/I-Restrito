@@ -3,7 +3,6 @@ package com.serasa.erestrito.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,27 +10,23 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,12 +37,16 @@ import org.springframework.data.web.SortDefault.SortDefaults;
 
 import com.serasa.erestrito.domain.dto.ProdutoDto;
 import com.serasa.erestrito.domain.entity.Produto;
-import com.serasa.erestrito.domain.entity.TipoAdicao;
+import com.serasa.erestrito.domain.entity.Usuario;
+import com.serasa.erestrito.domain.enums.Restricao;
+import com.serasa.erestrito.security.jwt.CurrentUser;
 import com.serasa.erestrito.service.FileStorageService;
 import com.serasa.erestrito.service.ProdutoService;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 @RestController
-@RequestMapping("/produto")
+@RequestMapping("api/v1/produto")
 public class ProdutoController {
 
   @Autowired
@@ -55,18 +54,21 @@ public class ProdutoController {
 
   @Autowired
   private FileStorageService fileStorageService;
-  
+
   @Value("${file.upload-dir}")
   private String FILE_PATH_ROOT;
 
-
   @GetMapping
   public Page<Produto> getAll(
-	  @PageableDefault(page = 0, size = 10) 
-	  @SortDefaults({
-        @SortDefault(sort = "id", direction = Direction.ASC)
-      }) Pageable paginacao) {
-    return service.listarTodos(paginacao);
+      @PageableDefault(page = 0, size = 10) @SortDefaults({
+          @SortDefault(sort = "id", direction = Direction.ASC)
+      }) Pageable paginacao,
+      @RequestParam(required = false) Restricao restricao) {
+    if (restricao != null) {
+      return service.listarTodos(restricao, paginacao);
+    } else {
+      return service.listarTodos(paginacao);
+    }
   }
 
   @GetMapping("/{id}")
@@ -83,7 +85,7 @@ public class ProdutoController {
   @PostMapping
   @Transactional
   public ResponseEntity<?> salvar(@ModelAttribute @Valid ProdutoDto payload, @RequestPart MultipartFile imagem,
-      UriComponentsBuilder uriBuilder) {
+      UriComponentsBuilder uriBuilder, @ApiIgnore @CurrentUser Usuario usuarioLogado) {
     String fileName = fileStorageService.storeFile(imagem);
 
     Produto produto = payload.converte();
@@ -94,37 +96,49 @@ public class ProdutoController {
         .toUriString();
 
     produto.setFoto(fileDownloadUri);
+    produto.setUsuario(usuarioLogado);
 
     service.salvar(produto);
 
     URI uri = uriBuilder.path("/produto/{id}").buildAndExpand(produto.getId()).toUri();
 
-    return ResponseEntity.created(uri).body(produto);
+    ProdutoDto produtoDto = new ProdutoDto();
+
+    produtoDto.setNome(produto.getNome());
+    produtoDto.setDescricao(produto.getDescricao());
+    produtoDto.setMarca(produto.getMarca());
+    produtoDto.setAdicao(produto.getAdicao());
+    produtoDto.setOrigem(produto.getOrigem());
+    produtoDto.setTipoProduto(produto.getTipoProduto());
+    produtoDto.setRestricao(produto.getRestricao());
+
+    return ResponseEntity.created(uri).body(produtoDto);
   }
-  
+
   @PutMapping("/{id}")
   @Transactional
-  public ResponseEntity<?> atualizar(@PathVariable Long id, @ModelAttribute @Valid ProdutoDto payload, @RequestPart MultipartFile imagem,
-	      UriComponentsBuilder uriBuilder) {
+  public ResponseEntity<?> atualizar(@PathVariable Long id, @ModelAttribute @Valid ProdutoDto payload,
+      @RequestPart MultipartFile imagem,
+      UriComponentsBuilder uriBuilder) {
     Optional<Produto> produto = service.listarPorId(id);
 
     if (produto.isPresent()) {
-    	Produto prod = payload.converte();
-    	prod.setFoto(produto.get().getFoto());
-    	prod.setId(id);
-    	
-    	if(!imagem.isEmpty()) {
-    		String fileName = fileStorageService.storeFile(imagem);
+      Produto prod = payload.converte();
+      prod.setFoto(produto.get().getFoto());
+      prod.setId(id);
 
-    	    String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-    	        .path("/produto/preview/")
-    	        .path(fileName)
-    	        .toUriString();
+      if (!imagem.isEmpty()) {
+        String fileName = fileStorageService.storeFile(imagem);
 
-    	    prod.setFoto(fileDownloadUri);
-    	}
-      
-    	return ResponseEntity.ok(service.salvar(prod));
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/produto/preview/")
+            .path(fileName)
+            .toUriString();
+
+        prod.setFoto(fileDownloadUri);
+      }
+
+      return ResponseEntity.ok(service.salvar(prod));
     }
 
     return ResponseEntity.notFound().build();
@@ -153,7 +167,7 @@ public class ProdutoController {
 
   }
 
-  @GetMapping(value = "/preview/{fileName:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
+  @GetMapping(value = "/preview/{fileName:.+}")
   public ResponseEntity<byte[]> previewFile(@PathVariable String fileName, HttpServletRequest request)
       throws IOException {
     byte[] image = new byte[0];

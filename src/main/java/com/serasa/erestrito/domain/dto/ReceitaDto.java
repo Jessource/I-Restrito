@@ -1,10 +1,12 @@
 package com.serasa.erestrito.domain.dto;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import com.serasa.erestrito.domain.entity.Receita;
-import com.serasa.erestrito.domain.entity.TipoRestricao;
+import com.serasa.erestrito.domain.enums.Restricao;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +36,8 @@ public class ReceitaDto {
   private String rendimento;
 
   @NotNull
-  private Long tipoRestricao;
+  @Enumerated(EnumType.STRING)
+  private Restricao restricao;
 
   public Receita converte() {
     Receita receita = new Receita();
@@ -44,7 +47,7 @@ public class ReceitaDto {
     receita.setModoDeFazer(this.getModoDeFazer());
     receita.setTempoDePreparo(this.getTempoDePreparo());
     receita.setRendimento(this.getRendimento());
-    receita.setTipoRestricao(new TipoRestricao(this.getTipoRestricao()));
+    receita.setRestricao(this.getRestricao());
 
     return receita;
   }

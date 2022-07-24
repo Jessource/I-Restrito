@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.serasa.erestrito.domain.entity.Receita;
+import com.serasa.erestrito.domain.enums.Restricao;
 import com.serasa.erestrito.repository.ReceitaRepository;
 
 @Service
@@ -20,6 +21,11 @@ public class ReceitaService {
 		return repository.findAll(paginacao);
 	}
 
+	public Page<Receita> listarTodos(Restricao restricao, Pageable paginacao) {
+		Page<Receita> receitas = repository.findByRestricao(restricao, paginacao);
+		return receitas;
+	}
+
 	public Optional<Receita> listarPorId(Long id) {
 		return repository.findById(id);
 	}
@@ -28,8 +34,8 @@ public class ReceitaService {
 		return repository.save(receita);
 	}
 
-	public void apagar(Receita Produto) {
-		repository.delete(Produto);
+	public void apagar(Receita receita) {
+		repository.delete(receita);
 	}
 
 }

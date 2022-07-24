@@ -5,7 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.serasa.erestrito.domain.entity.Produto;
+import com.serasa.erestrito.domain.enums.Restricao;
 
-public interface ProdutoRepository extends JpaRepository<Produto, Long>{
-
+public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+  Page<Produto> findByRestricao(Restricao restricao, Pageable paginacao);
 }

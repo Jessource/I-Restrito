@@ -1,16 +1,14 @@
 package com.serasa.erestrito.domain.dto;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.serasa.erestrito.domain.entity.Marca;
-import com.serasa.erestrito.domain.entity.Origem;
 import com.serasa.erestrito.domain.entity.Produto;
-import com.serasa.erestrito.domain.entity.TipoAdicao;
-import com.serasa.erestrito.domain.entity.TipoProduto;
-import com.serasa.erestrito.domain.entity.TipoRestricao;
+import com.serasa.erestrito.domain.enums.Restricao;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,38 +17,39 @@ import lombok.Setter;
 @Setter
 public class ProdutoDto {
   @NotBlank
-	@Length(min = 5, max = 50)
-	private String nome;
+  @Length(min = 5, max = 50)
+  private String nome;
 
-	@NotBlank
-	@Length(min = 5, max = 50)
-	private String descricao;
-
-  @NotNull
-	private Long tipoRestricao;
+  @NotBlank
+  @Length(min = 5, max = 50)
+  private String descricao;
 
   @NotNull
-	private Long marca;
+  @Enumerated(EnumType.STRING)
+  private Restricao restricao;
 
   @NotNull
-	private Long origem;
+  private String marca;
 
   @NotNull
-	private Long tipoAdicao;
+  private String origem;
 
   @NotNull
-	private Long tipoProduto;
+  private String adicao;
+
+  @NotNull
+  private String tipoProduto;
 
   public Produto converte() {
     Produto produto = new Produto();
-    
+
     produto.setNome(this.getNome());
     produto.setDescricao(this.getDescricao());
-    produto.setTipoRestricao(new TipoRestricao(this.getTipoRestricao()));
-    produto.setMarca(new Marca(this.getMarca()));
-    produto.setOrigem(new Origem(this.getOrigem()));
-    produto.setTipoAdicao(new TipoAdicao(this.getTipoAdicao()));
-    produto.setTipoProduto(new TipoProduto(this.getTipoProduto()));
+    produto.setRestricao(this.getRestricao());
+    produto.setMarca(this.getMarca());
+    produto.setOrigem(this.getOrigem());
+    produto.setAdicao(this.getAdicao());
+    produto.setTipoProduto(this.getTipoProduto());
 
     return produto;
   }

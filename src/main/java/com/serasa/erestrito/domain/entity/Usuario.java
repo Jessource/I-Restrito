@@ -1,62 +1,104 @@
 package com.serasa.erestrito.domain.entity;
 
-import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.Data;
+import com.serasa.erestrito.domain.enums.Perfil;
+
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
-@Table(name="tb_usuarios")
-public class Usuario implements Serializable {
-
+@Table(name = "usuarios")
+public class Usuario implements UserDetails {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_usuario")
 	private Long id;
-	
-	@NotBlank
-	@Size(max=20)
-	@Column(name="nome_usuario")
-	private String nome;
-	
-	@NotBlank
-	@Size(max=40)
-	@Column(name="sobrenome_usuario")
-	private String sobrenome;
-	
-	@NotBlank
-	@Size(max=80)
-	@Email
-	@Column(name="email_usuario")
-	private String email;
-	
-	@NotBlank
-	@Size(max=2)
-	@Column(name="uf_usuario")
-	private String uf;
-	 
-	@DateTimeFormat
-	@Past
-	@Column(name="dataNascimento_usuario")
-	private Date dataDeNascimento;
 
+	@Column(nullable = false)
+	private String nome;
+
+	@Column(nullable = false)
+	private String sobrenome;
+
+	@Column(nullable = false, unique = true)
+	private String email;
+
+	@Column(nullable = false)
+	private String senha;
+
+	@Column(nullable = false, length = 2)
+	private String uf;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Perfil perfil;
+
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Past
+	private Date dataNascimento;
+
+	@CreationTimestamp
+	private LocalDateTime createdAt;
+
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
+
+	@Override
+	public String getUsername() {
+		return this.getEmail();
+	}
+
+	@Override
+	public String getPassword() {
+		return this.getSenha();
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
 }

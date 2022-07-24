@@ -24,33 +24,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.serasa.erestrito.domain.dto.ComentarioProdutoDto;
-import com.serasa.erestrito.domain.entity.ComentarioProduto;
-import com.serasa.erestrito.domain.entity.Produto;
+import com.serasa.erestrito.domain.dto.ComentarioReceitaDto;
+import com.serasa.erestrito.domain.entity.ComentarioReceita;
+import com.serasa.erestrito.domain.entity.Receita;
 import com.serasa.erestrito.domain.entity.Usuario;
 import com.serasa.erestrito.security.jwt.CurrentUser;
-import com.serasa.erestrito.service.ComentarioProdutoService;
-import com.serasa.erestrito.service.ProdutoService;
+import com.serasa.erestrito.service.ComentarioReceitaService;
+import com.serasa.erestrito.service.ReceitaService;
 
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@RequestMapping("api/v1/comentario-produto")
-public class ComentarioProdutoController {
+@RequestMapping("api/v1/comentario-receita")
+public class ComentarioReceitaController {
 
     @Autowired
-    ComentarioProdutoService service;
+    ComentarioReceitaService service;
 
     @Autowired
-    ProdutoService produtoService;
+    ReceitaService receitaService;
 
-    @GetMapping("/produto/{id}")
+    @GetMapping("/receita/{id}")
     public ResponseEntity<Object> getAll(
             @PathVariable Long id,
             @PageableDefault(page = 0, size = 10) @SortDefaults({
                     @SortDefault(sort = "id", direction = Direction.ASC)
             }) Pageable paginacao) {
-        Page<ComentarioProduto> result = service.listarTodosPorProduto(id, paginacao);
+        Page<ComentarioReceita> result = service.listarTodosPorReceita(id, paginacao);
 
         if (result == null) {
             return ResponseEntity.notFound().build();
@@ -62,10 +62,10 @@ public class ComentarioProdutoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        Optional<ComentarioProduto> comentarioP = service.listarPorId(id);
+        Optional<ComentarioReceita> comentarioR = service.listarPorId(id);
 
-        if (comentarioP.isPresent()) {
-            return ResponseEntity.ok(comentarioP.get());
+        if (comentarioR.isPresent()) {
+            return ResponseEntity.ok(comentarioR.get());
         }
 
         return ResponseEntity.notFound().build();
@@ -74,18 +74,18 @@ public class ComentarioProdutoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> salvar(@RequestBody @Valid ComentarioProdutoDto payload, UriComponentsBuilder uriBuilder,
+    public ResponseEntity<?> salvar(@RequestBody @Valid ComentarioReceitaDto payload, UriComponentsBuilder uriBuilder,
             @ApiIgnore @CurrentUser Usuario usuarioLogado) {
-        Optional<Produto> produto = produtoService.listarPorId(payload.getProduto());
+        Optional<Receita> receita = receitaService.listarPorId(payload.getReceita());
 
-        if (produto.isPresent()) {
-            ComentarioProduto comentarioP = new ComentarioProduto();
-            comentarioP.setProduto(produto.get());
-            comentarioP.setDescricao(payload.getDescricao());
-            comentarioP.setUsuario(usuarioLogado);
+        if (receita.isPresent()) {
+            ComentarioReceita comentarioR = new ComentarioReceita();
+            comentarioR.setReceita(receita.get());
+            comentarioR.setDescricao(payload.getDescricao());
+            comentarioR.setUsuario(usuarioLogado);
 
-            ComentarioProduto response = service.salvar(comentarioP);
-            URI uri = uriBuilder.path("/comentario-produto/{id}").buildAndExpand(response.getId()).toUri();
+            ComentarioReceita response = service.salvar(comentarioR);
+            URI uri = uriBuilder.path("/comentario-receita/{id}").buildAndExpand(response.getId()).toUri();
 
             return ResponseEntity.created(uri).body(response);
         }
@@ -95,14 +95,14 @@ public class ComentarioProdutoController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid ComentarioProdutoDto form) {
-        Optional<ComentarioProduto> comentarioP = service.listarPorId(id);
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid ComentarioReceitaDto form) {
+        Optional<ComentarioReceita> comentarioR = service.listarPorId(id);
 
-        if (comentarioP.isPresent()) {
-            comentarioP.get().setDescricao(form.getDescricao());
-            service.salvar(comentarioP.get());
+        if (comentarioR.isPresent()) {
+            comentarioR.get().setDescricao(form.getDescricao());
+            service.salvar(comentarioR.get());
 
-            return ResponseEntity.ok(service.salvar(comentarioP.get()));
+            return ResponseEntity.ok(service.salvar(comentarioR.get()));
         }
 
         return ResponseEntity.notFound().build();
@@ -111,11 +111,11 @@ public class ComentarioProdutoController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> deletar(@PathVariable Long id) {
-        Optional<ComentarioProduto> comentarioP = service.listarPorId(id);
+        Optional<ComentarioReceita> comentarioR = service.listarPorId(id);
 
-        if (comentarioP.isPresent()) {
-            service.apagar(comentarioP.get());
-            return ResponseEntity.ok(comentarioP);
+        if (comentarioR.isPresent()) {
+            service.apagar(comentarioR.get());
+            return ResponseEntity.ok(comentarioR);
         }
 
         return ResponseEntity.notFound().build();
