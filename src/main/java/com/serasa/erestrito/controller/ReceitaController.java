@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.data.web.SortDefault.SortDefaults;
 
 import com.serasa.erestrito.domain.dto.ReceitaDto;
+import com.serasa.erestrito.domain.entity.Produto;
 import com.serasa.erestrito.domain.entity.Receita;
 import com.serasa.erestrito.domain.entity.Usuario;
 import com.serasa.erestrito.domain.enums.Restricao;
@@ -170,6 +172,19 @@ public class ReceitaController {
       e.printStackTrace();
     }
     return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+  }
+  
+  @DeleteMapping("/{id}")
+  @Transactional
+  public ResponseEntity<?> deletar(@PathVariable Long id) {
+      Optional<Receita> receita = service.listarPorId(id);
+
+      if (receita.isPresent()) {
+          service.apagar(receita.get());
+          return ResponseEntity.ok(receita);
+      }
+
+      return ResponseEntity.notFound().build();
   }
 
 }
