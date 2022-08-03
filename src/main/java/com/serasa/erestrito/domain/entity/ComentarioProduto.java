@@ -2,7 +2,6 @@ package com.serasa.erestrito.domain.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,12 +18,10 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "comentario_produto")
@@ -60,4 +57,12 @@ public class ComentarioProduto implements Serializable {
 	public ComentarioProduto(Long id) {
 		this.id = id;
 	}
+
+	public ComentarioProduto(String descricao, Produto produto, Usuario usuario) {
+		this.descricao = descricao;
+		this.produto = produto;
+		this.usuario = usuario;
+	}
+	
+	
 }

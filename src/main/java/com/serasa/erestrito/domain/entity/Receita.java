@@ -18,12 +18,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.serasa.erestrito.domain.enums.Restricao;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "receitas")
+@NoArgsConstructor
 public class Receita implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -58,4 +60,17 @@ public class Receita implements Serializable {
 	@JoinColumn(name = "usuario_id", nullable = false)
 	@JsonIgnore
 	private Usuario usuario;
+
+	public Receita(String titulo, String ingredientes, String modoDeFazer, String tempoDePreparo, String rendimento,
+			String foto, Restricao restricao, Usuario usuario) {
+		super();
+		this.titulo = titulo;
+		this.ingredientes = ingredientes;
+		this.modoDeFazer = modoDeFazer;
+		this.tempoDePreparo = tempoDePreparo;
+		this.rendimento = rendimento;
+		this.foto = foto;
+		this.restricao = restricao;
+		this.usuario = usuario;
+	}
 }

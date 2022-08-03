@@ -1,8 +1,8 @@
 package com.serasa.erestrito.domain.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,18 +22,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.serasa.erestrito.domain.enums.Perfil;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements UserDetails {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -59,14 +57,25 @@ public class Usuario implements UserDetails {
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Past
-	private Date dataNascimento;
+	private LocalDate dataNascimento;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
-
+	
+	public Usuario(String nome, String sobrenome, String email, String senha, String uf, LocalDate dataNascimento, Perfil perfil) {
+		super();
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		this.email = email;
+		this.senha = senha;
+		this.uf = uf;
+		this.dataNascimento = dataNascimento;
+		this.perfil = perfil;
+	}
+	
 	@Override
 	public String getUsername() {
 		return this.getEmail();
@@ -101,4 +110,8 @@ public class Usuario implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
 	}
+
+
+
+
 }
