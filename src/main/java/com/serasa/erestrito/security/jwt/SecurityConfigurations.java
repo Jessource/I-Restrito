@@ -3,6 +3,7 @@ package com.serasa.erestrito.security.jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+@Profile("!test")
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -44,24 +46,15 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-				.cors()
-				.and()
-				.csrf()
-				.disable()
-				.exceptionHandling()
-				.authenticationEntryPoint(authEntryPointJwt)
-				.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and()
-				.authorizeRequests()
+		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/api/v1/auth", "/api/v1/usuario", "/swagger-ui/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-				.anyRequest()
-				.authenticated()
-				.and()
-				.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+				.antMatchers(HttpMethod.GET, "/api/v1/auth", "/api/v1/produto", "/api/v1/produto/**", "/api/v1/receita",
+						"/api/v1/receita/**","/api/v1/comentario-produto/produto/**",
+						"/api/v1/comentario-produto/**", "/api/v1/comentario-receita/receita/**",
+						"/api/v1/comentario-receita/**", "/swagger-ui/**")
+				.permitAll().antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll().anyRequest().authenticated()
+				.and().addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override

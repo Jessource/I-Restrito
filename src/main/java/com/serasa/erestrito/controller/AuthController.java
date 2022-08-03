@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,6 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Authentication Endpoint")
 @RestController
 @RequestMapping("/api/v1/auth")
+@Profile("!test")
 public class AuthController {
 
 	@Autowired
