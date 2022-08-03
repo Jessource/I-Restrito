@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.data.web.SortDefault.SortDefaults;
 
 import com.serasa.erestrito.domain.dto.ProdutoDto;
+import com.serasa.erestrito.domain.entity.ComentarioProduto;
 import com.serasa.erestrito.domain.entity.Produto;
 import com.serasa.erestrito.domain.entity.Usuario;
 import com.serasa.erestrito.domain.enums.Restricao;
@@ -177,6 +179,19 @@ public class ProdutoController {
       e.printStackTrace();
     }
     return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
+  }
+  
+  @DeleteMapping("/{id}")
+  @Transactional
+  public ResponseEntity<?> deletar(@PathVariable Long id) {
+      Optional<Produto> produto = service.listarPorId(id);
+
+      if (produto.isPresent()) {
+          service.apagar(produto.get());
+          return ResponseEntity.ok(produto);
+      }
+
+      return ResponseEntity.notFound().build();
   }
 
 }

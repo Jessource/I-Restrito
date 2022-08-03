@@ -20,11 +20,11 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.serasa.erestrito.domain.enums.Restricao;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "produtos")
 public class Produto implements Serializable {
@@ -68,4 +68,21 @@ public class Produto implements Serializable {
 	@JoinColumn(name = "usuario_id", nullable = false)
 	@JsonIgnore
 	private Usuario usuario;
+
+	public Produto(String nome, String descricao, String foto, Restricao restricao, String origem,
+			String marca, String adicao, String tipoProduto, Usuario usuario) {
+		super();
+		this.nome = nome;
+		this.descricao = descricao;
+		this.foto = foto;
+		this.restricao = restricao;
+		this.origem = origem;
+		this.marca = marca;
+		this.adicao = adicao;
+		this.tipoProduto = tipoProduto;
+		this.usuario = usuario;
+	}
+	
+	
+	
 }

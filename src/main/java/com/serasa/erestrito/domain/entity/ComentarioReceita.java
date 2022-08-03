@@ -2,7 +2,6 @@ package com.serasa.erestrito.domain.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -60,4 +59,13 @@ public class ComentarioReceita implements Serializable {
 	public ComentarioReceita(Long id) {
 		this.id = id;
 	}
+
+	public ComentarioReceita(String descricao, Receita receita, Usuario usuario) {
+		super();
+		this.descricao = descricao;
+		this.receita = receita;
+		this.usuario = usuario;
+	}
+	
+	
 }

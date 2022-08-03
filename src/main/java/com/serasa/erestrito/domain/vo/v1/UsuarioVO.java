@@ -1,7 +1,7 @@
 package com.serasa.erestrito.domain.vo.v1;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.EnumType;
@@ -17,10 +17,12 @@ import com.github.dozermapper.core.Mapping;
 import com.serasa.erestrito.domain.enums.Perfil;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -54,7 +56,18 @@ public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Seriali
 	private Perfil perfil;
 
 	@NotNull
-	private Date dataNascimento;
+	private LocalDate dataNascimento;
+	
+	public UsuarioVO(String nome, String sobrenome, String email, String senha, String uf, LocalDate dataNascimento, Perfil perfil) {
+		super();
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		this.email = email;
+		this.senha = senha;
+		this.uf = uf;
+		this.perfil = perfil;
+		this.dataNascimento = dataNascimento;
+	}
 
 	@Override
 	public int hashCode() {
@@ -75,5 +88,9 @@ public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Seriali
 				&& Objects.equals(key, other.key) && Objects.equals(nome, other.nome)
 				&& Objects.equals(sobrenome, other.sobrenome) && Objects.equals(uf, other.uf);
 	}
+
+
+	
+	
 
 }
