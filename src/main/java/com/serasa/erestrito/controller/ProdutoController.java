@@ -73,6 +73,16 @@ public class ProdutoController {
     }
   }
 
+  @GetMapping("/usuario")
+  public Page<Produto> getAllByUsuario(
+      @PageableDefault(page = 0, size = 10) @SortDefaults({
+          @SortDefault(sort = "id", direction = Direction.ASC)
+      }) Pageable paginacao,
+      @ApiIgnore @CurrentUser Usuario usuarioLogado) {
+
+    return service.listarProdutosDoUsuario(usuarioLogado, paginacao);
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<?> getById(@PathVariable Long id) {
     Optional<Produto> produto = service.listarPorId(id);
@@ -83,6 +93,7 @@ public class ProdutoController {
 
     return ResponseEntity.notFound().build();
   }
+
 
   @PostMapping
   @Transactional

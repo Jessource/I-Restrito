@@ -48,7 +48,7 @@ import com.serasa.erestrito.service.ReceitaService;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@RequestMapping("api/v1//receita")
+@RequestMapping("api/v1/receita")
 public class ReceitaController {
 
   @Autowired
@@ -73,6 +73,16 @@ public class ReceitaController {
     } else {
       return service.listarTodos(paginacao);
     }
+  }
+
+  @GetMapping("/usuario")
+  public Page<Receita> getAllByUsuario(
+      @PageableDefault(page = 0, size = 10) @SortDefaults({
+          @SortDefault(sort = "id", direction = Direction.ASC)
+      }) Pageable paginacao,
+      @ApiIgnore @CurrentUser Usuario usuarioLogado) {
+
+    return service.listarProdutosDoUsuario(usuarioLogado, paginacao);
   }
 
   @GetMapping("/{id}")

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.serasa.erestrito.domain.entity.Produto;
+import com.serasa.erestrito.domain.entity.Usuario;
 import com.serasa.erestrito.domain.enums.Restricao;
 import com.serasa.erestrito.repository.ProdutoRepository;
 
@@ -22,6 +23,11 @@ public class ProdutoService {
 		return produtos;
 	}
 
+	public Page<Produto> listarProdutosDoUsuario(Usuario usuario, Pageable paginacao) {
+		Page<Produto> produtos = repository.findByUsuario(usuario, paginacao);
+		return produtos;
+	}
+	
 	public Page<Produto> listarTodos(Restricao restricao, Pageable paginacao) {
 		Page<Produto> produtos = repository.findByRestricao(restricao, paginacao);
 		return produtos;

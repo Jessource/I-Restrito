@@ -52,7 +52,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/api/v1/auth", "/api/v1/produto", "/api/v1/produto/**", "/api/v1/receita",
 						"/api/v1/receita/**","/api/v1/comentario-produto/produto/**",
 						"/api/v1/comentario-produto/**", "/api/v1/comentario-receita/receita/**",
-						"/api/v1/comentario-receita/**", "/swagger-ui/**")
+						"/api/v1/comentario-receita/**","/api/v1/tipo-restricao**", "/api/v1/produto/tipo-restricao/**","/swagger-ui/**")
 				.permitAll().antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll().anyRequest().authenticated()
 				.and().addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
