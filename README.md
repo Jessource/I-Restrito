@@ -12,7 +12,7 @@
   
 
 <h1 align="center"> App-I-Restrito </h1>
-<p align="center">🚀API em construção: Projeto integrado do grupo Missão Impossível - Programa Transforme-se Serasa + Digital House</p>
+<p align="center">🚀API recém construida em sua primeira versão: Projeto integrado do grupo Missão Impossível - Programa Transforme-se Serasa + Digital House</p>
 <p align="center"> O objetivo é criar uma aplicação com o intuito de conectar pessoas com algum tipo de restrição alimentar. </p>
 
 ### Features
