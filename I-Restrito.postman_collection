@@ -1,0 +1,965 @@
+{
+	"info": {
+		"_postman_id": "d3989d0f-c47f-4070-aef9-90d27f1109fe",
+		"name": "I Restrito",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13806174"
+	},
+	"item": [
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin@admin.com\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"jessica\",\r\n    \"sobrenome\": \"Souza\",\r\n    \"email\": \"jessica@gmail.com\",\r\n    \"senha\": \"jessica\",\r\n    \"uf\": \"AM\",\r\n    \"perfil\": \"COMMON_USER\",\r\n    \"dataNascimento\": \"1999-02-28\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuario",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produtos",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nome",
+									"value": "mococa4",
+									"type": "text"
+								},
+								{
+									"key": "descricao",
+									"value": "muito bom",
+									"type": "text"
+								},
+								{
+									"key": "restricao",
+									"value": "LACTOSE",
+									"type": "text"
+								},
+								{
+									"key": "marca",
+									"value": "Dobom",
+									"type": "text"
+								},
+								{
+									"key": "origem",
+									"value": "ANIMAL2",
+									"type": "text"
+								},
+								{
+									"key": "adicao",
+									"value": "Açucares",
+									"type": "text"
+								},
+								{
+									"key": "tipoProduto",
+									"value": "Processado",
+									"type": "text"
+								},
+								{
+									"key": "imagem",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Pictures/logo ufam.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produto",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nome",
+									"value": "Leite condensado",
+									"type": "text"
+								},
+								{
+									"key": "descricao",
+									"value": "ahsdahdsk",
+									"type": "text"
+								},
+								{
+									"key": "restricao",
+									"value": "LACTOSE",
+									"type": "text"
+								},
+								{
+									"key": "marca",
+									"value": "Italac",
+									"type": "text"
+								},
+								{
+									"key": "origem",
+									"value": "vegetal",
+									"type": "text"
+								},
+								{
+									"key": "adicao",
+									"value": "Açucares e sal",
+									"type": "text"
+								},
+								{
+									"key": "tipoProduto",
+									"value": "Processado",
+									"type": "text"
+								},
+								{
+									"key": "imagem",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Pictures/Apresentação1.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produto/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produto",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Preview Imagem",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/produto/preview/82357.jpg",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produto",
+								"preview",
+								"82357.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/produto",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produto"
+							],
+							"query": [
+								{
+									"key": "restricao",
+									"value": "LACTOSE",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarProdutosdeUsuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/produto/usuario",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produto",
+								"usuario"
+							],
+							"query": [
+								{
+									"key": "restricao",
+									"value": "LACTOSE",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar por Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/produto/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tipos Restrições",
+			"item": [
+				{
+					"name": "Lista todos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tipo-restricao",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tipo-restricao"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comentario produto",
+			"item": [
+				{
+					"name": "Cadastar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"Produto ruim\",\r\n    \"produto\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/comentario-produto",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-produto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"Produto pessimo\",\r\n    \"produto\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/comentario-produto/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-produto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista por ID produto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/comentario-produto/produto/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-produto",
+								"produto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/comentario-produto/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-produto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Comentario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/comentario-produto/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-produto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comentario receita",
+			"item": [
+				{
+					"name": "Cadastar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"receita maravilhosa\",\r\n    \"receita\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/comentario-receita",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-receita"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"Produto pessimo\",\r\n    \"produto\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/comentario-receita/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-receita",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista por ID produto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/comentario-produto/receita/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-produto",
+								"receita",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/comentario-receita/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-receita",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Comentario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/comentario-receita/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"comentario-receita",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Receita",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "titulo",
+									"value": "Bolo de Macacheira",
+									"type": "text"
+								},
+								{
+									"key": "ingredientes",
+									"value": "300 g de macacheira, 500g de manteiga ou margarinaaaa",
+									"type": "text"
+								},
+								{
+									"key": "modoDeFazer",
+									"value": "Bara tudo jakjas90 askdjklasj doiajsdl kasjd asdlasjd",
+									"type": "text"
+								},
+								{
+									"key": "tempoDePreparo",
+									"value": "45 a 60 min",
+									"type": "text"
+								},
+								{
+									"key": "rendimento",
+									"value": "10 pedaços",
+									"type": "text"
+								},
+								{
+									"key": "restricao",
+									"value": "LACTOSE",
+									"type": "text"
+								},
+								{
+									"key": "tipoProduto",
+									"value": "Processado",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "imagem",
+									"type": "file",
+									"src": "/C:/Users/LENOVO/Pictures/Apresentação1.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/receita",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"receita"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "titulo",
+									"value": "Bolo de Macacheira",
+									"type": "text"
+								},
+								{
+									"key": "ingredientes",
+									"value": "300 g de macacheira, 500g de manteiga ou margarina",
+									"type": "text"
+								},
+								{
+									"key": "modoDeFazer",
+									"value": "Bara tudo jakjas90 askdjklasj doiajsdl kasjd asdlasjd",
+									"type": "text"
+								},
+								{
+									"key": "tempoDePreparo",
+									"value": "45 a 60 min",
+									"type": "text"
+								},
+								{
+									"key": "rendimento",
+									"value": "15 pedaços",
+									"type": "text"
+								},
+								{
+									"key": "restricao",
+									"value": "GLUTEN",
+									"type": "text"
+								},
+								{
+									"key": "tipoProduto",
+									"value": "Processado",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "imagem",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/receita/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"receita",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Preview Imagem",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/receita/preview/WhatsApp%20Image%202022-04-25%20at%2008.54.11.jpeg",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"receita",
+								"preview",
+								"WhatsApp%20Image%202022-04-25%20at%2008.54.11.jpeg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/receita",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"receita"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar por Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/receita/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"receita",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar por Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/receita/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"receita",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
