@@ -39,7 +39,7 @@ Modifique as propriedades `spring.datasource.username` e `spring.datasource.pass
 
 Crie uma pasta na raiz do seu diretório e renomei como: "uploads" passando assim o caminho para o upload de imagens: no `aplication.properties` `file.upload-dir=C:/uploads/`
 
-Ao iniciar a aplicação, consulte o swagger no endereço http://localhost:8080/swagger-ui/#/ para ter acesso aos endpoints ou teste pelo postamn, importando o docuemnto "I-Restrito.postman_collection"
+Ao iniciar a aplicação, consulte o swagger no endereço http://localhost:8080/swagger-ui/#/ para ter acesso aos endpoints ou teste pelo postman, importando o documento "I-Restrito.postman_collection"
 
 ## Dados padrões
 Ao rodar a primeira vez a aplicação, alguns dados são semeados no banco:
