@@ -120,7 +120,6 @@ public class ProdutoController {
     produtoDto.setNome(produto.getNome());
     produtoDto.setDescricao(produto.getDescricao());
     produtoDto.setMarca(produto.getMarca());
-    produtoDto.setAdicao(produto.getAdicao());
     produtoDto.setOrigem(produto.getOrigem());
     produtoDto.setTipoProduto(produto.getTipoProduto());
     produtoDto.setRestricao(produto.getRestricao());

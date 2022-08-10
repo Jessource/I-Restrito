@@ -23,8 +23,6 @@ public class ListarProdutoDto {
 
 	private String origem;
 
-	private String adicao;
-
 	private String tipoProduto;
 
 	private Long cadastradoPor;
@@ -37,7 +35,6 @@ public class ListarProdutoDto {
 		this.setRestricao(produto.getRestricao());
 		this.setMarca(produto.getMarca());
 		this.setOrigem(produto.getOrigem());
-		this.setAdicao(produto.getAdicao());
 		this.setTipoProduto(produto.getTipoProduto());
 		this.setCadastradoPor(produto.getUsuario().getId());
 	}

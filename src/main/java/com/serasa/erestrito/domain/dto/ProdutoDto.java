@@ -35,9 +35,6 @@ public class ProdutoDto {
   private String origem;
 
   @NotNull
-  private String adicao;
-
-  @NotNull
   private String tipoProduto;
 
   public Produto converte() {
@@ -48,7 +45,6 @@ public class ProdutoDto {
     produto.setRestricao(this.getRestricao());
     produto.setMarca(this.getMarca());
     produto.setOrigem(this.getOrigem());
-    produto.setAdicao(this.getAdicao());
     produto.setTipoProduto(this.getTipoProduto());
 
     return produto;

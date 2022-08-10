@@ -59,9 +59,6 @@ public class Produto implements Serializable {
 	private String marca;
 
 	@Column(nullable = true)
-	private String adicao;
-
-	@Column(nullable = true)
 	private String tipoProduto;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -70,7 +67,7 @@ public class Produto implements Serializable {
 	private Usuario usuario;
 
 	public Produto(String nome, String descricao, String foto, Restricao restricao, String origem,
-			String marca, String adicao, String tipoProduto, Usuario usuario) {
+			String marca, String tipoProduto, Usuario usuario) {
 		super();
 		this.nome = nome;
 		this.descricao = descricao;
@@ -78,7 +75,6 @@ public class Produto implements Serializable {
 		this.restricao = restricao;
 		this.origem = origem;
 		this.marca = marca;
-		this.adicao = adicao;
 		this.tipoProduto = tipoProduto;
 		this.usuario = usuario;
 	}
