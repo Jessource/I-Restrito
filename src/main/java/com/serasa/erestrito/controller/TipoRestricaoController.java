@@ -18,13 +18,18 @@ public class TipoRestricaoController {
 		List<HashMap<String, String>> result = new ArrayList<>();
 
 		HashMap<String, String> map = new HashMap<>();
-		map.put("descricao", "Glúten");
+		map.put("descricao", "Gluten");
 		map.put("id", Restricao.GLUTEN.toString());
 		result.add(map);
 
 		map = new HashMap<>();
 		map.put("descricao", "Lactose");
 		map.put("id", Restricao.LACTOSE.toString());
+		result.add(map);
+		
+		map = new HashMap<>();
+		map.put("descricao", "Caseina");
+		map.put("id", Restricao.CASEINA.toString());
 		result.add(map);
 
 		return result;
