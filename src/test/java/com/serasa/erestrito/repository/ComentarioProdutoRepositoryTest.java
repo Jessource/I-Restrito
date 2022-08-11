@@ -38,7 +38,7 @@ public class ComentarioProdutoRepositoryTest {
 		
 		Usuario usuario = new Usuario("Teste", "Teste", "teste@teste.com", "Senha", "RO", LocalDate.of(2001, 1, 1),
 				Perfil.ADMIN);
-		Produto produto = new Produto("Teste", "Teste", "Teste", Restricao.LACTOSE, "Teste", "Teste", "Teste", "Teste",
+		Produto produto = new Produto("Teste", "Teste", "Teste", Restricao.LACTOSE, "Teste", "Teste", "Teste",
 				usuario);
 				
 		ComentarioProduto comentarioProduto = new ComentarioProduto("Teste", produto, usuario);
