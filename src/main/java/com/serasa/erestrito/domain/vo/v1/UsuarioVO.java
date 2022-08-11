@@ -50,6 +50,9 @@ public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Seriali
 	@NotNull
 	@Length(min = 2, max = 2)
 	private String uf;
+	@NotNull
+	@Length(min = 2, max = 50)
+	private String cidade;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
@@ -58,20 +61,21 @@ public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Seriali
 	@NotNull
 	private LocalDate dataNascimento;
 	
-	public UsuarioVO(String nome, String sobrenome, String email, String senha, String uf, LocalDate dataNascimento, Perfil perfil) {
+	public UsuarioVO(String nome, String sobrenome, String email, String senha, String uf,String cidade, LocalDate dataNascimento, Perfil perfil) {
 		super();
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.email = email;
 		this.senha = senha;
 		this.uf = uf;
+		this.cidade = cidade;
 		this.perfil = perfil;
 		this.dataNascimento = dataNascimento;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, key, nome, sobrenome, uf, dataNascimento);
+		return Objects.hash(email, key, nome, sobrenome, uf,cidade, dataNascimento);
 	}
 
 	@Override
@@ -86,7 +90,7 @@ public class UsuarioVO extends RepresentationModel<UsuarioVO> implements Seriali
 		UsuarioVO other = (UsuarioVO) obj;
 		return Objects.equals(dataNascimento, other.dataNascimento) && Objects.equals(email, other.email)
 				&& Objects.equals(key, other.key) && Objects.equals(nome, other.nome)
-				&& Objects.equals(sobrenome, other.sobrenome) && Objects.equals(uf, other.uf);
+				&& Objects.equals(sobrenome, other.sobrenome) && Objects.equals(uf, other.uf) && Objects.equals(cidade, other.cidade);
 	}
 
 

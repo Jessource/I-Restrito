@@ -29,7 +29,7 @@ public class UsuarioRepositoryTest {
 
 	@Test
 	public void IncluindoListandoEDeletandoUmUsuario() {
-		Usuario usuario = new Usuario("Teste", "Teste", "teste@teste.com", "Senha", "RO", LocalDate.of(2001, 1, 1),
+		Usuario usuario = new Usuario("Teste", "Teste", "teste@teste.com", "Senha", "RO", "Sao Paulo", LocalDate.of(2001, 1, 1),
 				Perfil.ADMIN);
 
 		String nomeUsuario = "Teste";

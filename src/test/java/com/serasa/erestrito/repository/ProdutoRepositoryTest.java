@@ -35,7 +35,7 @@ public class ProdutoRepositoryTest {
 	public void IncluindoListandoEDeletandoUmaReceita() {
 		Pageable paginacao = PageRequest.of(0, 10);
 
-		Usuario usuario = new Usuario("Teste", "Teste", "teste@teste.com", "Senha", "RO", LocalDate.of(2001, 1, 1),
+		Usuario usuario = new Usuario("Teste", "Teste", "teste@teste.com", "Senha", "RO","Sao Paulo", LocalDate.of(2001, 1, 1),
 				Perfil.ADMIN);
 		Produto produto = new Produto("Teste", "Teste", "Teste", Restricao.LACTOSE, "Teste", "Teste", "Teste",
 				usuario);

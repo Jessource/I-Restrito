@@ -50,6 +50,8 @@ public class Usuario implements UserDetails {
 
 	@Column(nullable = false, length = 2)
 	private String uf;
+	@Column(nullable = false, length = 2)
+	private String cidade;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -65,13 +67,14 @@ public class Usuario implements UserDetails {
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 	
-	public Usuario(String nome, String sobrenome, String email, String senha, String uf, LocalDate dataNascimento, Perfil perfil) {
+	public Usuario(String nome, String sobrenome, String email, String senha, String uf,String cidade, LocalDate dataNascimento, Perfil perfil) {
 		super();
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.email = email;
 		this.senha = senha;
 		this.uf = uf;
+		this.cidade = cidade;
 		this.dataNascimento = dataNascimento;
 		this.perfil = perfil;
 	}
