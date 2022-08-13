@@ -94,7 +94,6 @@ public class ProdutoController {
     return ResponseEntity.notFound().build();
   }
 
-
   @PostMapping
   @Transactional
   public ResponseEntity<?> salvar(@ModelAttribute @Valid ProdutoDto payload, @RequestPart MultipartFile imagem,
@@ -104,7 +103,7 @@ public class ProdutoController {
     Produto produto = payload.converte();
 
     String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-        .path("/produto/preview/")
+        .path("api/v1/produto/preview/")
         .path(fileName)
         .toUriString();
 
@@ -113,7 +112,7 @@ public class ProdutoController {
 
     service.salvar(produto);
 
-    URI uri = uriBuilder.path("/produto/{id}").buildAndExpand(produto.getId()).toUri();
+    URI uri = uriBuilder.path("api/v1/produto/{id}").buildAndExpand(produto.getId()).toUri();
 
     ProdutoDto produtoDto = new ProdutoDto();
 
@@ -143,7 +142,7 @@ public class ProdutoController {
         String fileName = fileStorageService.storeFile(imagem);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/produto/preview/")
+            .path("api/v1/produto/preview/")
             .path(fileName)
             .toUriString();
 
@@ -190,18 +189,18 @@ public class ProdutoController {
     }
     return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
   }
-  
+
   @DeleteMapping("/{id}")
   @Transactional
   public ResponseEntity<?> deletar(@PathVariable Long id) {
-      Optional<Produto> produto = service.listarPorId(id);
+    Optional<Produto> produto = service.listarPorId(id);
 
-      if (produto.isPresent()) {
-          service.apagar(produto.get());
-          return ResponseEntity.ok(produto);
-      }
+    if (produto.isPresent()) {
+      service.apagar(produto.get());
+      return ResponseEntity.ok(produto);
+    }
 
-      return ResponseEntity.notFound().build();
+    return ResponseEntity.notFound().build();
   }
 
 }

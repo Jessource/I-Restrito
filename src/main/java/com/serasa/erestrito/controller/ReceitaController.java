@@ -105,7 +105,7 @@ public class ReceitaController {
     Receita receita = payload.converte();
 
     String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-        .path("/receita/preview/")
+        .path("api/v1/receita/preview/")
         .path(fileName)
         .toUriString();
 
@@ -114,7 +114,7 @@ public class ReceitaController {
 
     service.salvar(receita);
 
-    URI uri = uriBuilder.path("/produto/{id}").buildAndExpand(receita.getId()).toUri();
+    URI uri = uriBuilder.path("api/v1/receita/{id}").buildAndExpand(receita.getId()).toUri();
 
     return ResponseEntity.created(uri).body(receita);
   }
@@ -136,7 +136,7 @@ public class ReceitaController {
         String fileName = fileStorageService.storeFile(imagem);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/receita/preview/")
+            .path("api/v1/receita/preview/")
             .path(fileName)
             .toUriString();
 
@@ -183,18 +183,18 @@ public class ReceitaController {
     }
     return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
   }
-  
+
   @DeleteMapping("/{id}")
   @Transactional
   public ResponseEntity<?> deletar(@PathVariable Long id) {
-      Optional<Receita> receita = service.listarPorId(id);
+    Optional<Receita> receita = service.listarPorId(id);
 
-      if (receita.isPresent()) {
-          service.apagar(receita.get());
-          return ResponseEntity.ok(receita);
-      }
+    if (receita.isPresent()) {
+      service.apagar(receita.get());
+      return ResponseEntity.ok(receita);
+    }
 
-      return ResponseEntity.notFound().build();
+    return ResponseEntity.notFound().build();
   }
 
 }
