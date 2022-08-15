@@ -129,16 +129,17 @@ public class ProdutoController {
   @PutMapping("/{id}")
   @Transactional
   public ResponseEntity<?> atualizar(@PathVariable Long id, @ModelAttribute @Valid ProdutoDto payload,
-      @RequestPart MultipartFile imagem,
-      UriComponentsBuilder uriBuilder) {
+      @RequestPart(required = false) MultipartFile imagem,
+      UriComponentsBuilder uriBuilder, @CurrentUser Usuario usuarioLogado) {
     Optional<Produto> produto = service.listarPorId(id);
 
     if (produto.isPresent()) {
       Produto prod = payload.converte();
       prod.setFoto(produto.get().getFoto());
       prod.setId(id);
+      prod.setUsuario(usuarioLogado);
 
-      if (!imagem.isEmpty()) {
+      if (imagem != null) {
         String fileName = fileStorageService.storeFile(imagem);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
