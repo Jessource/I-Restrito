@@ -41,7 +41,7 @@ public class Produto implements Serializable {
 	private String nome;
 
 	@NotBlank
-	@Length(min = 5, max = 50)
+	@Length(min = 5, max = 250)
 	@Column(length = 50, nullable = false)
 	private String descricao;
 
