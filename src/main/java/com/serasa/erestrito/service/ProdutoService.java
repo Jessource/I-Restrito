@@ -32,6 +32,11 @@ public class ProdutoService {
 		Page<Produto> produtos = repository.findByRestricao(restricao, paginacao);
 		return produtos;
 	}
+	
+	public Page<Produto> listarPorNome(String nome, Pageable paginacao) {
+		Page<Produto> produtos = repository.findByNomeContaining(nome, paginacao);
+		return produtos;
+	}
 
 	public Optional<Produto> listarPorId(Long id) {
 		return repository.findById(id);

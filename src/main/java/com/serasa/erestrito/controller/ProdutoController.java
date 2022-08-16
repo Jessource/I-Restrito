@@ -62,7 +62,7 @@ public class ProdutoController {
 
   @GetMapping
   public Page<Produto> getAll(
-      @PageableDefault(page = 0, size = 10) @SortDefaults({
+       @SortDefaults({
           @SortDefault(sort = "id", direction = Direction.ASC)
       }) Pageable paginacao,
       @RequestParam(required = false) Restricao restricao) {
@@ -75,13 +75,24 @@ public class ProdutoController {
 
   @GetMapping("/usuario")
   public Page<Produto> getAllByUsuario(
-      @PageableDefault(page = 0, size = 10) @SortDefaults({
+       @SortDefaults({
           @SortDefault(sort = "id", direction = Direction.ASC)
       }) Pageable paginacao,
       @ApiIgnore @CurrentUser Usuario usuarioLogado) {
 
     return service.listarProdutosDoUsuario(usuarioLogado, paginacao);
   }
+  
+  @GetMapping("/nome/{nome}")
+  public Page<Produto> getByNome(@PathVariable String nome,
+       @SortDefaults({
+          @SortDefault(sort = "nome", direction = Direction.ASC)
+      }) Pageable paginacao) {
+
+    return service.listarPorNome(nome, paginacao);
+  }
+
+  
 
   @GetMapping("/{id}")
   public ResponseEntity<?> getById(@PathVariable Long id) {
